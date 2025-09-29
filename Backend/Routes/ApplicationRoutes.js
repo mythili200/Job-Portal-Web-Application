@@ -5,7 +5,7 @@ const {
   getJobApplications,
   updateApplicationStatus,
 } = require("../Controller/ApplicationController");
-const { protect } = require("../Middleware/authMiddleware");
+const { protect } = require("../Middleware/AuthMiddleware");
 
 const router = express.Router();
 

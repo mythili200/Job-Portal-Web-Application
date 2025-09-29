@@ -3,22 +3,26 @@ const Job = require("../Models/JobModel");
 
 const applyJob = async (req, res) => {
   try {
-    const { jobId } = req.body;
-    const job = await Job.findById(jobId);
-    if (!job) {
-      return res.status(404).json({ message: "Job not found" });
-    }
-    const existing = await Application.findOne({
-      job: jobId,
-      user: req.user.id,
-    });
-    if (existing) {
-      return res.status(400).json({ message: "Already applied for this job" });
+    if (!req.user || !req.user._id) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
+    const { jobId } = req.body;
+    if (!jobId) return res.status(400).json({ message: "jobId is required" });
+    const job = await Job.findById(jobId);
+    if (!job) return res.status(404).json({ message: "Job not found" });
+
+    const existing = await Application.findOne({
+      jobId,
+      userId: req.user._id,
+    });
+    if (existing)
+      return res
+        .status(400)
+        .json({ message: "You Already applied for this job" });
     const application = await Application.create({
-      job: jobId,
-      user: req.user.id,
+      jobId,
+      userId: req.user._id,
     });
 
     res.status(201).json({
@@ -26,17 +30,19 @@ const applyJob = async (req, res) => {
       application,
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({
       message: "Error applying for job",
       error: error.message,
     });
   }
 };
+
 const getUserApplications = async (req, res) => {
   try {
-    const applications = await Application.find({ user: req.user.id }).populate(
-      "job"
-    );
+    const applications = await Application.find({
+      userId: req.user._id,
+    }).populate("jobId");
     res.json(applications);
   } catch (error) {
     res.status(500).json({

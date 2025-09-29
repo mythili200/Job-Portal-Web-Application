@@ -21,4 +21,4 @@ app.listen(PORT, () => {
 });
 app.use("/api/users", UserRoutes);
 app.use("/api/jobs", JobRoutes);
-app.use("/api/applicaion", ApplicationRoutes);
+app.use("/api/application", ApplicationRoutes);

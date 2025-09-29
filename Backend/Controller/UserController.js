@@ -35,9 +35,11 @@ const userLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ msg: "User not found" });
-    }
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+
     const Match = await bcrypt.compare(password, user.password);
     if (!Match) {
       return res
@@ -66,16 +68,18 @@ const userLogin = async (req, res) => {
     res.status(400).json({ msg: err.message });
   }
 };
-
 const getProfile = async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select("-password");
     if (!user) {
-      return res.status(404).json({ msg: "User not found" });
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
     }
     res.status(200).json({ success: true, data: user });
   } catch (error) {
-    res.status(200).json({ success: true, data: error?.message });
+    res.status(500).json({ success: false, message: error?.message });
   }
 };
+
 module.exports = { registerUser, userLogin, getProfile };
