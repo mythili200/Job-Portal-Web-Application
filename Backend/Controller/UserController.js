@@ -56,11 +56,11 @@ const userLogin = async (req, res) => {
     res.status(200).json({
       success: true,
       token,
+      role: user.role,
       data: {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
       },
       msg: "User Login Successfull",
     });

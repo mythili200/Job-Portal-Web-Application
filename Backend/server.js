@@ -7,6 +7,7 @@ const UserRoutes = require("./Routes/UserRoutes");
 const JobRoutes = require("./Routes/JobRoutes");
 const ApplicationRoutes = require("./Routes/ApplicationRoutes");
 const cors = require("cors");
+const ProfileRoutes = require("./Routes/ProfileRoutes");
 
 const PORT = 5000;
 app.use(express.json());
@@ -19,6 +20,8 @@ mongoose
 app.listen(PORT, () => {
   console.log(`Sever is running on ${PORT}`);
 });
+app.use("/uploads", express.static("uploads"));
 app.use("/api/users", UserRoutes);
 app.use("/api/jobs", JobRoutes);
 app.use("/api/application", ApplicationRoutes);
+app.use("/api/profile", ProfileRoutes);

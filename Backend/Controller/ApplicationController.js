@@ -108,10 +108,30 @@ const updateApplicationStatus = async (req, res) => {
     });
   }
 };
+const getAllApplications = async (req, res) => {
+  try {
+    // Only admin can access
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const applications = await Application.find()
+      .populate("userId", "name email") // get user info
+      .populate("jobId", "title company"); // get job info
+
+    res.json({ success: true, data: applications });
+  } catch (error) {
+    res.status(500).json({
+      message: "Error fetching all applications",
+      error: error.message,
+    });
+  }
+};
 
 module.exports = {
   getUserApplications,
   getJobApplications,
   updateApplicationStatus,
   applyJob,
+  getAllApplications,
 };
