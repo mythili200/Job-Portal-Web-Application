@@ -1,10 +1,10 @@
-// App.jsx
-import React from "react";
+import React, { useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
   Navigate,
+  useLocation,
 } from "react-router-dom";
 import Topbar from "./Components/Topbar";
 import Login from "./Pages/Login";
@@ -15,35 +15,62 @@ import AdminDashboard from "./Pages/AdminDashboard";
 import UserProfile from "./Pages/Profile";
 
 function App() {
-  const token = localStorage.getItem("token");
+  const [token, setToken] = useState(localStorage.getItem("token"));
+  const [role, setRole] = useState(localStorage.getItem("role"));
 
   return (
     <Router>
-      {token && <Topbar />}
+      <AppContent
+        token={token}
+        setToken={setToken}
+        setRole={setRole}
+        role={role}
+      />
+    </Router>
+  );
+}
+
+function AppContent({ token, setToken, setRole, role }) {
+  const location = useLocation();
+  const hideTopbarRoutes = ["/login", "/register"];
+  const showTopbar = token && !hideTopbarRoutes.includes(location.pathname);
+
+  return (
+    <>
+      {showTopbar && (
+        <Topbar setToken={setToken} setRole={setRole} role={role} />
+      )}
 
       <Routes>
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={<Login setToken={setToken} setRole={setRole} role={role} />}
+        />
         <Route path="/register" element={<Register />} />
         <Route
           path="/dashboard"
-          element={token ? <Dashboard /> : <Navigate to="/login" />}
+          element={token ? <Dashboard /> : <Navigate to="/login" replace />}
         />
-        <Route path="/admin-dashboard" element={<AdminDashboard />} />
-
+        <Route
+          path="/admin-dashboard"
+          element={
+            token ? <AdminDashboard /> : <Navigate to="/login" replace />
+          }
+        />
         <Route
           path="/jobs"
-          element={token ? <Jobs /> : <Navigate to="/login" />}
+          element={token ? <Jobs /> : <Navigate to="/login" replace />}
         />
         <Route
           path="/profile"
-          element={token ? <UserProfile /> : <Navigate to="/login" />}
+          element={token ? <UserProfile /> : <Navigate to="/login" replace />}
         />
         <Route
           path="*"
-          element={<Navigate to={token ? "/dashboard" : "/login"} />}
+          element={<Navigate to={token ? "/dashboard" : "/login"} replace />}
         />
       </Routes>
-    </Router>
+    </>
   );
 }
 

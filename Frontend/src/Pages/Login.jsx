@@ -12,7 +12,7 @@ import {
 } from "@mui/material";
 import API from "../Api/axios";
 
-export default function Login() {
+export default function Login({ setToken, setRole }) {
   const navigate = useNavigate();
   const [snackbar, setSnackbar] = useState({
     msg: "",
@@ -37,29 +37,22 @@ export default function Login() {
     }
     setOpenSnackbar(false);
   };
-
   const onSubmit = async (data) => {
     try {
       const res = await API.post("/users/login", data);
-
-      if (res.data.success) {
-        // 1. Save token first
-        localStorage.setItem("token", res.data.token);
-
-        // 2. Navigate immediately
-        if (res?.data?.data?.role === "admin") {
-          navigate("/admin-dashboard");
-        } else {
-          navigate("/jobs");
-        }
-
-        // 3. Show snackbar after navigation
-        setSnackbar({
-          msg: "User logged in successfully",
-          severity: "success",
-        });
-        setOpenSnackbar(true);
-      }
+      localStorage.setItem("token", res.data.token);
+      setToken(res.data.token);
+      localStorage.setItem("role", res.data.role);
+      setRole(res.data.role);
+      setSnackbar({
+        msg: "User logged in successfully",
+        severity: "success",
+      });
+      setOpenSnackbar(true);
+      setTimeout(() => {
+        if (res.data.role === "admin") navigate("/admin-dashboard");
+        else navigate("/dashboard");
+      }, 1500);
     } catch (err) {
       setSnackbar({
         msg: err.response?.data?.message || "Login Failed",

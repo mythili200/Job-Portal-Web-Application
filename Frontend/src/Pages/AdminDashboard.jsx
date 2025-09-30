@@ -22,7 +22,7 @@ export default function AdminDashboard() {
     const fetchData = async () => {
       try {
         const jobRes = await API.get("/jobs", config);
-        const appRes = await API.get("/application/my-applications", config);
+        const appRes = await API.get("/application/all", config);
         setJobs(jobRes.data.data || []);
         setApplications(appRes.data.data || []);
       } catch (err) {

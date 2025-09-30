@@ -249,34 +249,46 @@ export default function Dashboard() {
               <AccessTimeIcon />
               Last 5 Applied Jobs
             </Typography>
-
-            {applications.slice(0, 5).map((app, idx) => (
-              <Box
-                key={idx}
-                sx={{
-                  backgroundColor: "#f5f5f5",
-                  p: 1.5,
-                  mb: 1,
-                  borderRadius: 1,
-                }}
-              >
-                <Typography variant="subtitle2" fontWeight="bold">
-                  {app?.jobId?.title || "Job Title N/A"}
+            {applications && applications.length > 0 ? (
+              applications.slice(0, 5).map((app, idx) => (
+                <Box
+                  key={idx}
+                  sx={{
+                    backgroundColor: "#f5f5f5",
+                    p: 1.5,
+                    mb: 1,
+                    borderRadius: 1,
+                  }}
+                >
+                  <Typography variant="subtitle2" fontWeight="bold">
+                    {app?.jobId?.title || "Job Title N/A"}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Company: {app?.jobId?.company || "N/A"}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Status: {app.status || "N/A"}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    Applied:{" "}
+                    {app.appliedAt
+                      ? new Date(app.appliedAt).toLocaleDateString()
+                      : "N/A"}
+                  </Typography>
+                </Box>
+              ))
+            ) : (
+              <>
+                <Typography
+                  variant="body1"
+                  color="text.secondary"
+                  sx={{ mt: 2 }}
+                  textAlign={"center"}
+                >
+                  You haven’t applied for any jobs yet.
                 </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Company: {app?.jobId?.company || "N/A"}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Status: {app.status || "N/A"}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  Applied:{" "}
-                  {app.appliedAt
-                    ? new Date(app.appliedAt).toLocaleDateString()
-                    : "N/A"}
-                </Typography>
-              </Box>
-            ))}
+              </>
+            )}
           </Card>
         </Grid>
       </Grid>
