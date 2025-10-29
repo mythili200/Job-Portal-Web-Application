@@ -6,14 +6,14 @@ const {
   updateApplicationStatus,
   getAllApplications,
 } = require("../Controller/ApplicationController");
-const { protect } = require("../Middleware/AuthMiddleware");
+const { authMiddleware } = require("../Middleware/AuthMiddleware");
 
 const router = express.Router();
 
-router.post("/apply", protect, applyJob);
-router.get("/my-applications", protect, getUserApplications);
-router.get("/all", protect, getAllApplications);
-router.get("/:jobId/applications", protect, getJobApplications);
-router.put("/:applicationId/status", protect, updateApplicationStatus);
+router.post("/apply", authMiddleware, applyJob);
+router.get("/my-applications", authMiddleware, getUserApplications);
+router.get("/all", authMiddleware, getAllApplications);
+router.get("/:jobId/applications", authMiddleware, getJobApplications);
+router.put("/:applicationId/status", authMiddleware, updateApplicationStatus);
 
 module.exports = router;

@@ -4,14 +4,14 @@ const {
   getProfile,
   updateProfile,
 } = require("../Controller/Profilecontroller");
-const { protect } = require("../Middleware/AuthMiddleware");
+const { authMiddleware } = require("../Middleware/AuthMiddleware");
 const upload = require("../Middleware/UploadMiddleware");
 
-router.get("/users", protect, getProfile);
+router.get("/users", authMiddleware, getProfile);
 
 router.put(
   "/upload",
-  protect,
+  authMiddleware,
   upload.fields([
     { name: "profilePhoto", maxCount: 1 },
     { name: "resume", maxCount: 1 },
