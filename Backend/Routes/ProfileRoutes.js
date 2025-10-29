@@ -4,7 +4,7 @@ const {
   getProfile,
   updateProfile,
 } = require("../Controller/Profilecontroller");
-const { authMiddleware } = require("../Middleware/AuthMiddleware");
+const { authMiddleware } = require("../Middleware/authMiddleware");
 const upload = require("../Middleware/UploadMiddleware");
 
 router.get("/users", authMiddleware, getProfile);

@@ -6,10 +6,11 @@ const {
   updatedJob,
   deleteJob,
 } = require("../Controller/JobController");
-const { authMiddleware } = require("../Middleware/AuthMiddleware");
+const { authMiddleware } = require("../Middleware/authMiddleware");
 const { adminProtect } = require("../Middleware/AdminMiddleware");
 
 const router = express.Router();
+
 router.get("/", getJob);
 router.get("/:id", getJobById);
 router.post("/", authMiddleware, adminProtect, createJob);

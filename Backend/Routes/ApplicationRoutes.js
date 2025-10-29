@@ -6,7 +6,7 @@ const {
   updateApplicationStatus,
   getAllApplications,
 } = require("../Controller/ApplicationController");
-const { authMiddleware } = require("../Middleware/AuthMiddleware");
+const { authMiddleware } = require("../Middleware/authMiddleware");
 
 const router = express.Router();
 
