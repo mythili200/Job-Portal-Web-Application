@@ -11,7 +11,13 @@ const ProfileRoutes = require("./Routes/ProfileRoutes");
 
 const PORT = 5000;
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://earnest-speculoos-af5e31.netlify.app/",
+    credentials: true,
+  })
+);
+
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => console.log("MongoDB Connected"))
