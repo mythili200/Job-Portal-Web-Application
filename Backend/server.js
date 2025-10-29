@@ -13,7 +13,7 @@ const PORT = 5000;
 app.use(express.json());
 app.use(
   cors({
-    origin: "https://earnest-speculoos-af5e31.netlify.app/",
+    origin: "https://earnest-speculoos-af5e31.netlify.app",
     credentials: true,
   })
 );
